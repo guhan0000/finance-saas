@@ -23,3 +23,15 @@ export const saveRefreshToken = async (data) => {
     data,
   });
 };
+
+export const findRefreshToken = async (token) => {
+  return prisma.refreshToken.findUnique({
+    where: { token },
+  });
+};
+
+export const deleteRefreshToken = async (token) => {
+  return prisma.refreshToken.delete({
+    where: { token },
+  });
+};

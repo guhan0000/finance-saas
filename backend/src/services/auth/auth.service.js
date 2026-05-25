@@ -43,3 +43,37 @@ export const registerUser = async (data) => {
     refreshToken,
   };
 };
+
+export const loginUser = async (data) => {
+  const user = await findUserByEmail(data.email);
+
+  if (!user) {
+    throw new Error("Invalid credentials");
+  }
+
+  const isPasswordValid = await bcrypt.compare(
+    data.password,
+    user.password
+  );
+
+  if (!isPasswordValid) {
+    throw new Error("Invalid credentials");
+  }
+
+  const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
+
+  await saveRefreshToken({
+    token: refreshToken,
+    userId: user.id,
+    expiresAt: new Date(
+      Date.now() + 7 * 24 * 60 * 60 * 1000
+    ),
+  });
+
+  return {
+    user,
+    accessToken,
+    refreshToken,
+  };
+};

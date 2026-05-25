@@ -35,3 +35,9 @@ export const deleteRefreshToken = async (token) => {
     where: { token },
   });
 };
+
+export const deleteAllUserRefreshTokens = async (userId) => {
+  return prisma.refreshToken.deleteMany({
+    where: { userId },
+  });
+};

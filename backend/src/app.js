@@ -4,6 +4,7 @@ import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth/auth.routes.js";
+import testRoutes from "./routes/test.routes.js";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(cors());
 app.use(helmet());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
+app.use("/api/test", testRoutes);
 
 app.get("/", (req, res) => {
   res.send("Finance SaaS API Running");

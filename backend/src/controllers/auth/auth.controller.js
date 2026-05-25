@@ -1,0 +1,17 @@
+import { registerSchema } from "../../validations/auth/auth.validation.js";
+
+import { registerUser } from "../../services/auth/auth.service.js";
+
+export const register = async (req, res) => {
+  try {
+    const validatedData = registerSchema.parse(req.body);
+
+    const result = await registerUser(validatedData);
+
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};

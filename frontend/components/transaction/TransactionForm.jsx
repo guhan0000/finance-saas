@@ -3,8 +3,10 @@
 import { useForm } from "react-hook-form";
 
 import { useCreateTransaction } from "@/hooks/transaction/useTransaction";
+import { useCategories } from "@/hooks/category/useCategory";
 
 export default function TransactionForm() {
+  const { data: categories } = useCategories();
   const { register, handleSubmit, reset } = useForm();
 
   const mutation = useCreateTransaction();
@@ -42,11 +44,23 @@ export default function TransactionForm() {
         <option value="INCOME">Income</option>
       </select>
 
-      <input
-        {...register("categoryId")}
-        placeholder="Category ID"
-        className="form-control mb-3"
-      />
+      <select
+  {...register("categoryId")}
+  className="form-select mb-3"
+>
+  <option value="">
+    Select Category
+  </option>
+
+  {categories?.map((category) => (
+    <option
+      key={category.id}
+      value={category.id}
+    >
+      {category.name}
+    </option>
+  ))}
+</select>
 
       <button className="btn btn-dark">Add Transaction</button>
     </form>

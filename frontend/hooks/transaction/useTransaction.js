@@ -7,11 +7,11 @@ import {
   getTransactions,
 } from "@/services/transaction/transaction.service";
 
-export const useTransactions = () => {
+export const useTransactions = (page, type) => {
   return useQuery({
-    queryKey: ["transactions"],
+    queryKey: ["transactions", page, type],
 
-    queryFn: getTransactions,
+    queryFn: () => getTransactions(page, type),
   });
 };
 

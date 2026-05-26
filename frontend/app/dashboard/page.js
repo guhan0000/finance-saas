@@ -2,14 +2,23 @@
 
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
+import TransactionForm from "@/components/transaction/TransactionForm";
+
+import TransactionTable from "@/components/transaction/TransactionTable";
+
+import { useDashboard } from "@/hooks/dashboard/useDashboard";
+
 import { logout } from "@/lib/auth";
 
 export default function DashboardPage() {
+  const { data } =
+    useDashboard();
+
   return (
     <ProtectedRoute>
       <div className="container mt-5">
 
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between mb-4">
 
           <h1>Dashboard</h1>
 
@@ -21,6 +30,42 @@ export default function DashboardPage() {
           </button>
 
         </div>
+
+        <div className="row mb-4">
+
+          <div className="col-md-6">
+            <div className="card p-3">
+              <h5>Total Income</h5>
+
+              <h3>
+                ₹
+                {
+                  data?.summary
+                    ?.totalIncome
+                }
+              </h3>
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <div className="card p-3">
+              <h5>Total Expense</h5>
+
+              <h3>
+                ₹
+                {
+                  data?.summary
+                    ?.totalExpense
+                }
+              </h3>
+            </div>
+          </div>
+
+        </div>
+
+        <TransactionForm />
+
+        <TransactionTable />
 
       </div>
     </ProtectedRoute>

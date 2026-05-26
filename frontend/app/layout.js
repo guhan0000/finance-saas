@@ -4,6 +4,8 @@ import QueryProvider from "@/providers/query-provider";
 
 import { Toaster } from "react-hot-toast";
 
+import Navbar from "@/components/Navbar";
+
 export const metadata = {
   title: "Finance SaaS",
   description: "Finance Management App",
@@ -15,6 +17,9 @@ export default function RootLayout({ children }) {
       <body>
         <QueryProvider>
           <Toaster />
+
+          <Navbar />
+
           {children}
         </QueryProvider>
       </body>

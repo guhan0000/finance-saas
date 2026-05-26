@@ -9,5 +9,9 @@ export const getToken = () => {
 export const logout = () => {
   localStorage.removeItem("accessToken");
 
-  window.location.href = "/login";
+  localStorage.removeItem("refreshToken");
+
+  localStorage.removeItem("user");
+
+  window.location.href = "/";
 };

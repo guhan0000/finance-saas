@@ -31,7 +31,7 @@ export const getDashboardSummary = async (orgId) => {
 };
 
 export const getCategoryBreakdown = async (orgId) => {
-  return prisma.transaction.groupBy({
+  const grouped = await prisma.transaction.groupBy({
     by: ["categoryId"],
 
     where: {
@@ -42,4 +42,16 @@ export const getCategoryBreakdown = async (orgId) => {
       amount: true,
     },
   });
+
+  const categories = await prisma.category.findMany({
+    where: {
+      orgId,
+    },
+  });
+
+  return grouped.map((item) => ({
+    ...item,
+
+    category: categories.find((cat) => cat.id === item.categoryId),
+  }));
 };

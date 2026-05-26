@@ -8,6 +8,8 @@ import { useCreateTransaction } from "@/hooks/transaction/useTransaction";
 
 import { useCategories } from "@/hooks/category/useCategory";
 
+import toast from "react-hot-toast";
+
 export default function TransactionForm() {
   const { register, handleSubmit, reset, setValue, watch } = useForm();
 
@@ -34,6 +36,8 @@ export default function TransactionForm() {
 
     mutation.mutate(data, {
       onSuccess: () => {
+        toast.success("Transaction Added");
+
         reset({
           title: "",
 
@@ -43,6 +47,10 @@ export default function TransactionForm() {
 
           categoryId: categories?.[0]?.id || "",
         });
+      },
+
+      onError: () => {
+        toast.error("Failed to Add Transaction");
       },
     });
   };

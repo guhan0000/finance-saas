@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import toast from "react-hot-toast";
 import {
   useCategories,
   useCreateCategory,
@@ -24,7 +24,13 @@ export default function CategoryManager() {
       { name },
       {
         onSuccess: () => {
+          toast.success("Category Added");
+
           setName("");
+        },
+
+        onError: () => {
+          toast.error("Failed to Add Category");
         },
       },
     );
@@ -57,7 +63,16 @@ export default function CategoryManager() {
 
             <button
               className="btn btn-danger btn-sm"
-              onClick={() => deleteMutation.mutate(category.id)}
+              onClick={() =>
+                deleteMutation.mutate(category.id, {
+                  onSuccess: () => {
+                    toast.success("Category Deleted");
+                  },
+                  onError: () => {
+                    toast.error("Delete Failed");
+                  },
+                })
+              }
             >
               Delete
             </button>

@@ -13,7 +13,7 @@ const getAuthConfig = () => {
 export const getTransactions = async (page = 1, type = "") => {
   const response = await api.get(
     `/transactions?page=${page}&type=${type}`,
-    getAuthConfig(),
+    // getAuthConfig(),
   );
 
   return response.data;

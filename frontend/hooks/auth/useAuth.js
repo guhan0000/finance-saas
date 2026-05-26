@@ -15,6 +15,8 @@ export const useRegister = () => {
     onSuccess: (data) => {
       localStorage.setItem("accessToken", data.accessToken);
 
+      localStorage.setItem("refreshToken", data.refreshToken);
+
       router.push("/dashboard");
     },
   });
@@ -28,6 +30,8 @@ export const useLogin = () => {
 
     onSuccess: (data) => {
       localStorage.setItem("accessToken", data.accessToken);
+
+      localStorage.setItem("refreshToken", data.refreshToken);
 
       router.push("/dashboard");
     },

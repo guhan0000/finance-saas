@@ -3,21 +3,28 @@ import express from "express";
 import {
   create,
   getAll,
-} from "../../controllers/transaction/transaction.controller.js";
-import {
   update,
   remove,
 } from "../../controllers/transaction/transaction.controller.js";
 
 import { authenticate } from "../../middlewares/auth.middleware.js";
 
+import { authorizeRoles } from "../../middlewares/role.middleware.js";
+
 const router = express.Router();
 
-router.post("/", authenticate, create);
+/*
+USER:
+- create transactions
+- manage own transactions
+*/
 
-router.get("/", authenticate, getAll);
-router.put("/:id", authenticate, update);
+router.post("/", authenticate, authorizeRoles("USER"), create);
 
-router.delete("/:id", authenticate, remove);
+router.get("/", authenticate, authorizeRoles("USER", "ACCOUNTANT"), getAll);
+
+router.put("/:id", authenticate, authorizeRoles("USER"), update);
+
+router.delete("/:id", authenticate, authorizeRoles("USER"), remove);
 
 export default router;

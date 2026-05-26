@@ -13,8 +13,8 @@ import { authorizeRoles } from "../../middlewares/role.middleware.js";
 const router = express.Router();
 
 router.get("/", authenticate, getAllCategories);
-router.post("/", authenticate, authorizeRoles("ADMIN"), create);
+router.post("/", authenticate, authorizeRoles("ACCOUNTANT"), create);
 
-router.delete("/:id", authenticate, authorizeRoles("ADMIN"), remove);
+router.delete("/:id", authenticate, authorizeRoles("ACCOUNTANT"), remove);
 
 export default router;

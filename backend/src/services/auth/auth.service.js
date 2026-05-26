@@ -1,4 +1,5 @@
 import prisma from "../../config/prisma.js";
+
 import bcrypt from "bcryptjs";
 
 import {
@@ -6,17 +7,16 @@ import {
   createOrganization,
   createUser,
   saveRefreshToken,
-} from "../../repositories/auth/auth.repository.js";
-
-import { generateAccessToken, generateRefreshToken } from "../../utils/jwt.js";
-
-import {
   findRefreshToken,
   deleteRefreshToken,
   deleteAllUserRefreshTokens,
 } from "../../repositories/auth/auth.repository.js";
 
-import { verifyRefreshToken } from "../../utils/jwt.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken,
+} from "../../utils/jwt.js";
 
 export const registerUser = async (data) => {
   const existingUser = await findUserByEmail(data.email);
@@ -31,58 +31,99 @@ export const registerUser = async (data) => {
 
   const user = await createUser({
     name: data.name,
+
     email: data.email,
+
     password: hashedPassword,
+
     orgId: organization.id,
+
     role: "ADMIN",
   });
 
   const accessToken = generateAccessToken(user);
+
   const refreshToken = generateRefreshToken(user);
 
   await saveRefreshToken({
     token: refreshToken,
+
     userId: user.id,
+
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   });
 
+  const safeUser = {
+    id: user.id,
+
+    name: user.name,
+
+    email: user.email,
+
+    role: user.role,
+
+    organization,
+  };
+
   return {
-    user,
+    user: safeUser,
+
     accessToken,
+
     refreshToken,
   };
 };
 
 export const loginUser = async (data) => {
-  const user = await findUserByEmail(data.email);
+  const user = await prisma.user.findUnique({
+    where: {
+      email: data.email,
+    },
+
+    include: {
+      organization: true,
+    },
+  });
 
   if (!user) {
     throw new Error("Invalid credentials");
   }
 
-  const isPasswordValid = await bcrypt.compare(
-    data.password,
-    user.password
-  );
+  const isPasswordValid = await bcrypt.compare(data.password, user.password);
 
   if (!isPasswordValid) {
     throw new Error("Invalid credentials");
   }
 
   const accessToken = generateAccessToken(user);
+
   const refreshToken = generateRefreshToken(user);
 
   await saveRefreshToken({
     token: refreshToken,
+
     userId: user.id,
-    expiresAt: new Date(
-      Date.now() + 7 * 24 * 60 * 60 * 1000
-    ),
+
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   });
 
+  const safeUser = {
+    id: user.id,
+
+    name: user.name,
+
+    email: user.email,
+
+    role: user.role,
+
+    organization: user.organization,
+  };
+
   return {
-    user,
+    user: safeUser,
+
     accessToken,
+
     refreshToken,
   };
 };
@@ -108,22 +149,26 @@ export const refreshUserToken = async (token) => {
   await deleteRefreshToken(token);
 
   const user = await prisma.user.findUnique({
-    where: { id: decoded.userId },
+    where: {
+      id: decoded.userId,
+    },
   });
 
   const newAccessToken = generateAccessToken(user);
+
   const newRefreshToken = generateRefreshToken(user);
 
   await saveRefreshToken({
     token: newRefreshToken,
+
     userId: user.id,
-    expiresAt: new Date(
-      Date.now() + 7 * 24 * 60 * 60 * 1000
-    ),
+
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   });
 
   return {
     accessToken: newAccessToken,
+
     refreshToken: newRefreshToken,
   };
 };

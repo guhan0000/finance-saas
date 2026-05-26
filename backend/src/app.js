@@ -9,6 +9,7 @@ import transactionRoutes from "./routes/transaction/transaction.routes.js";
 import dashboardRoutes from "./routes/dashboard/dashboard.routes.js";
 import exportRoutes from "./routes/export.routes.js";
 import categoryRoutes from "./routes/category/category.routes.js";
+import userRoutes from "./routes/user/user.routes.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/export", exportRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Finance SaaS API Running");

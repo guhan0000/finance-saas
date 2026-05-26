@@ -1,9 +1,16 @@
 import prisma from "../../config/prisma.js";
 
-export const getDashboardSummary = async (orgId) => {
+export const getDashboardSummary = async (orgId, userId, role) => {
   const income = await prisma.transaction.aggregate({
     where: {
-      orgId,
+      ...(role === "USER"
+        ? {
+            userId,
+          }
+        : {
+            orgId,
+          }),
+
       type: "INCOME",
     },
 
@@ -14,7 +21,14 @@ export const getDashboardSummary = async (orgId) => {
 
   const expense = await prisma.transaction.aggregate({
     where: {
-      orgId,
+      ...(role === "USER"
+        ? {
+            userId,
+          }
+        : {
+            orgId,
+          }),
+
       type: "EXPENSE",
     },
 
@@ -30,12 +44,18 @@ export const getDashboardSummary = async (orgId) => {
   };
 };
 
-export const getCategoryBreakdown = async (orgId) => {
+export const getCategoryBreakdown = async (orgId, userId, role) => {
   const grouped = await prisma.transaction.groupBy({
     by: ["categoryId"],
 
     where: {
-      orgId,
+      ...(role === "USER"
+        ? {
+            userId,
+          }
+        : {
+            orgId,
+          }),
     },
 
     _sum: {

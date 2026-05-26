@@ -9,3 +9,13 @@ export const createTransactionSchema = z.object({
 
   categoryId: z.string(),
 });
+
+export const updateTransactionSchema = z.object({
+  title: z.string().min(2).optional(),
+
+  amount: z.number().positive().optional(),
+
+  type: z.enum(["INCOME", "EXPENSE"]).optional(),
+
+  categoryId: z.string().optional(),
+});

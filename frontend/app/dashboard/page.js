@@ -10,6 +10,7 @@ import { useDashboard } from "@/hooks/dashboard/useDashboard";
 
 import { logout } from "@/lib/auth";
 import CategoryManager from "@/components/category/CategoryManager";
+import DashboardCharts from "@/components/dashboard/DashboardCharts";
 
 export default function DashboardPage() {
   const { data } = useDashboard();
@@ -42,6 +43,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+        <DashboardCharts dashboardData={data} />
         <CategoryManager />
 
         <TransactionForm />

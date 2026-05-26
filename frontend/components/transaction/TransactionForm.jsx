@@ -92,7 +92,9 @@ export default function TransactionForm() {
         ))}
       </select>
 
-      <button className="btn btn-dark">Add Transaction</button>
+      <button className="btn btn-dark" disabled={mutation.isPending}>
+        {mutation.isPending ? "Adding..." : "Add Transaction"}
+      </button>
     </form>
   );
 }

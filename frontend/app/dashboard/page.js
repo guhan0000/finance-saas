@@ -13,7 +13,14 @@ import CategoryManager from "@/components/category/CategoryManager";
 import DashboardCharts from "@/components/dashboard/DashboardCharts";
 
 export default function DashboardPage() {
-  const { data } = useDashboard();
+  const { data, isLoading } = useDashboard();
+  if (isLoading) {
+    return (
+      <div className="container mt-5">
+        <h3>Loading Dashboard...</h3>
+      </div>
+    );
+  }
 
   return (
     <ProtectedRoute>

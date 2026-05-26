@@ -48,8 +48,12 @@ export default function CategoryManager() {
           className="form-control"
         />
 
-        <button onClick={handleCreate} className="btn btn-dark">
-          Add
+        <button
+          onClick={handleCreate}
+          className="btn btn-dark"
+          disabled={createMutation.isPending}
+        >
+          {createMutation.isPending ? "Adding..." : "Add"}
         </button>
       </div>
 
@@ -63,18 +67,20 @@ export default function CategoryManager() {
 
             <button
               className="btn btn-danger btn-sm"
+              disabled={deleteMutation.isPending}
               onClick={() =>
                 deleteMutation.mutate(category.id, {
                   onSuccess: () => {
                     toast.success("Category Deleted");
                   },
+
                   onError: () => {
                     toast.error("Delete Failed");
                   },
                 })
               }
             >
-              Delete
+              {deleteMutation.isPending ? "Deleting..." : "Delete"}
             </button>
           </li>
         ))}

@@ -12,7 +12,13 @@ export default function TransactionTable() {
   const { data, isLoading } = useTransactions(page, type);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="text-center p-4">
+        <div className="spinner-border" role="status" />
+
+        <p className="mt-2">Loading Transactions...</p>
+      </div>
+    );
   }
 
   return (

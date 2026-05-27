@@ -56,6 +56,31 @@ export default function DashboardPage() {
   return (
     <ProtectedRoute>
       <div className="container mt-5">
+        <div className="row mb-4">
+          <div className="col-md-4">
+            <div className="card p-3">
+              <h6>User Name</h6>
+
+              <h4>{user?.name}</h4>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="card p-3">
+              <h6>Role</h6>
+
+              <h4>{user?.role}</h4>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="card p-3">
+              <h6>Organization</h6>
+
+              <h4>{user?.organization?.name}</h4>
+            </div>
+          </div>
+        </div>
         {/* ================= ADMIN ================= */}
 
         {user?.role === "ADMIN" && (

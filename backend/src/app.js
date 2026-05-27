@@ -17,7 +17,18 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+// CORS configuration
+const allowedOrigins = [
+  "http://localhost:3000",
+  process.env.FRONTEND_URL || "http://localhost:3000"
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 app.use(helmet());
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);

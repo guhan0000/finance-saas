@@ -10,6 +10,7 @@ import dashboardRoutes from "./routes/dashboard/dashboard.routes.js";
 import exportRoutes from "./routes/export.routes.js";
 import categoryRoutes from "./routes/category/category.routes.js";
 import userRoutes from "./routes/user/user.routes.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 
 dotenv.config();
 
@@ -30,5 +31,5 @@ app.use("/api/users", userRoutes);
 app.get("/", (req, res) => {
   res.send("Finance SaaS API Running");
 });
-
+app.use(errorHandler);
 export default app;

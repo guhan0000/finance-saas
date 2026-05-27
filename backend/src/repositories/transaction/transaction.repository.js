@@ -6,18 +6,20 @@ export const createTransaction = async (data) => {
   });
 };
 
-export const getTransactions = async (orgId, skip, take, filters) => {
+export const getTransactions = async (orgId, userId, role) => {
   return prisma.transaction.findMany({
-    where: {
-      orgId,
+    where:
+      role === "USER"
+        ? {
+            userId,
+          }
+        : {
+            orgId,
+          },
 
-      ...(filters.type && {
-        type: filters.type,
-      }),
+    include: {
+      category: true,
     },
-
-    skip,
-    take,
 
     orderBy: {
       createdAt: "desc",

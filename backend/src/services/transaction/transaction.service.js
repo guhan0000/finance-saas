@@ -1,11 +1,7 @@
 import prisma from "../../config/prisma.js";
 
 import {
-  createTransaction,
   getTransactions,
-} from "../../repositories/transaction/transaction.repository.js";
-
-import {
   updateTransaction,
   deleteTransaction,
 } from "../../repositories/transaction/transaction.repository.js";
@@ -15,7 +11,9 @@ export const createUserTransaction = async (data, user) => {
     return tx.transaction.create({
       data: {
         ...data,
+
         userId: user.userId,
+
         orgId: user.orgId,
       },
     });
@@ -25,13 +23,35 @@ export const createUserTransaction = async (data, user) => {
 export const fetchTransactions = async (user, page, limit, filters) => {
   const skip = (page - 1) * limit;
 
-  return getTransactions(user.orgId, skip, limit, filters);
+  return getTransactions(
+    user.orgId,
+
+    user.userId,
+
+    user.role,
+
+    skip,
+
+    limit,
+
+    filters,
+  );
 };
 
 export const updateUserTransaction = async (id, data, user) => {
-  return updateTransaction(id, user.orgId, data);
+  return updateTransaction(
+    id,
+
+    user.userId,
+
+    data,
+  );
 };
 
 export const removeTransaction = async (id, user) => {
-  return deleteTransaction(id, user.orgId);
+  return deleteTransaction(
+    id,
+
+    user.userId,
+  );
 };
